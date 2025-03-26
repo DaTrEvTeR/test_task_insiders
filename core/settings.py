@@ -45,7 +45,10 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-LOCAL_APPS = ["apps.locations"]
+LOCAL_APPS = [
+    "apps.locations",
+    "apps.users",
+]
 
 THIRD_PARTY_APPS = [
     "rest_framework",
@@ -141,6 +144,7 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = "/"
+AUTH_USER_MODEL = "users.User"
 
 # DRF settings
 
@@ -154,3 +158,13 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
 }
+
+# email sevice
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = env.str("SMTP_HOSTNAME")
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = env.str("EMAIL_HOST__USER")
+EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST__PASSWORD")
+DEFAULT_FROM_EMAIL = env.str("EMAIL_HOST__DEFAULT_FROM_EMAIL")
