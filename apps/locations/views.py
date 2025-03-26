@@ -83,7 +83,6 @@ class LocationViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
 class ReviewViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         location_id = self.kwargs["location_pk"]
@@ -113,7 +112,6 @@ class ReviewViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
 class LikeViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         location_id = self.kwargs["location_pk"]

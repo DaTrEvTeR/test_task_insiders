@@ -26,9 +26,6 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
     new_password = serializers.CharField(write_only=True, min_length=8)
 
     def validate(self, data):
-        """
-        Проверка существования пользователя и валидации токена.
-        """
         uidb64 = self.context.get("uidb64")
         token = self.context.get("token")
 
@@ -36,18 +33,15 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
             uid = urlsafe_base64_decode(uidb64).decode()
             user = User.objects.get(pk=uid)
         except (User.DoesNotExist, ValueError, TypeError):
-            raise ValidationError({"uidb64": "Неверный идентификатор пользователя."})
+            raise ValidationError({"uidb64": "Invalid user ID."})
 
         if not default_token_generator.check_token(user, token):
-            raise ValidationError({"token": "Недействительный токен."})
+            raise ValidationError({"token": "Invalid token."})
 
         self.context["user"] = user  # Сохраняем пользователя для использования в `save()`
         return data
 
     def save(self):
-        """
-        Устанавливает новый пароль пользователю.
-        """
         user = self.context["user"]
         user.set_password(self.validated_data["new_password"])
         user.save()
